@@ -1,4 +1,4 @@
-﻿<view class="page-container">
+<view class="page-container">
   <view class="top-decoration"></view>
 
   <view class="card card-heal" style="margin:20rpx 36rpx;padding:20rpx 28rpx">

@@ -1,4 +1,4 @@
-﻿Page({
+Page({
   data: {
     record: null,
     category: null

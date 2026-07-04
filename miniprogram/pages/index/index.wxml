@@ -1,4 +1,4 @@
-﻿<view class="page-container">
+<view class="page-container">
   <floating-decoration wx:if="{{themeConfig.floatingEnabled}}" items="{{floatingItems}}" />
   <view class="top-decoration"></view>
 

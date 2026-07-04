@@ -1,4 +1,4 @@
-﻿Page({
+Page({
   data: {
     builtIn: [
       { id: 'petal', name: '飘落花瓣', emoji: '🌸' },

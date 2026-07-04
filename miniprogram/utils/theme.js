@@ -1,4 +1,4 @@
-﻿var K = "decorationConfig";
+var K = "decorationConfig";
 var d = { cardStyle: "journal", floatingEnabled: true, floatingDensity: "medium", activeDecorations: [], customDecorationIds: [] };
 
 function g() {

@@ -1,4 +1,4 @@
-﻿<view class="page-container">
+<view class="page-container">
   <view class="top-decoration"></view>
 
   <view style="margin:20rpx 36rpx;display:flex;align-items:center;gap:20rpx;padding:28rpx" class="card card-cute">

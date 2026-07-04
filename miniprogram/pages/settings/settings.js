@@ -1,4 +1,4 @@
-﻿var theme = require('../../utils/theme.js');
+var theme = require('../../utils/theme.js');
 
 Page({
   data: {

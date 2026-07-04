@@ -1,4 +1,4 @@
-﻿var util = require('../../utils/util.js');
+var util = require('../../utils/util.js');
 var theme = require('../../utils/theme.js');
 
 Component({

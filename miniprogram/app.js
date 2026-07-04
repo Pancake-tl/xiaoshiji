@@ -1,4 +1,4 @@
-﻿App({
+App({
   globalData: {
     categories: [
       {id:"daily",name:"日常",emoji:"☕",color:"#FFB3BA"},
