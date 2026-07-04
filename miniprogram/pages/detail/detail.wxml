@@ -1,0 +1,36 @@
+﻿<view class="page-container" wx:if="{{record}}">
+  <view class="top-decoration"></view>
+
+  <view style="padding:20rpx 36rpx">
+    <text style="font-size:26rpx;color:var(--text-light)">{{record.createTime}}</text>
+    <view style="display:flex;gap:8rpx;margin-top:10rpx">
+      <view wx:if="{{category}}" class="tag" style="background:{{category.color}}40;color:{{category.color}}">{{category.name}}</view>
+      <view wx:if="{{record.mood}}" class="tag" style="background:var(--bg)">{{record.mood}}</view>
+      <view wx:if="{{record.weather}}" class="tag" style="background:var(--bg)">{{record.weather}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{record.content}}" class="card card-journal" style="padding:32rpx;margin:8rpx 36rpx">
+    <text style="font-size:30rpx;line-height:2;white-space:pre-wrap">{{record.content}}</text>
+  </view>
+
+  <view wx:if="{{record.images&&record.images.length>0}}" style="display:flex;flex-wrap:wrap;gap:10rpx;padding:0 36rpx 20rpx">
+    <view wx:for="{{record.images}}" wx:key="*this" style="width:calc(50%-5rpx);aspect-ratio:1;border-radius:12rpx;overflow:hidden" bindtap="onPreviewImage" data-index="{{index}}">
+      <image src="{{item}}" style="width:100%;height:100%" mode="aspectFill" />
+    </view>
+  </view>
+
+  <view wx:if="{{record.voicePath}}" class="card card-heal" style="margin:8rpx 36rpx;display:flex;align-items:center;gap:14rpx;padding:20rpx 28rpx" bindtap="onPlayVoice">
+    <text style="font-size:26rpx;color:var(--text-light);flex:1">[播放语音]</text>
+    <text style="font-size:22rpx;color:var(--primary)">{{record.voiceDuration||0}}s</text>
+  </view>
+
+  <view style="display:flex;gap:20rpx;padding:24rpx 36rpx 60rpx">
+    <button class="btn-ghost" style="flex:1;padding:24rpx 0" bindtap="onEdit">编辑</button>
+    <button class="btn-ghost" style="flex:1;padding:24rpx 0;color:#E8728A;border-color:#FFB8C6" bindtap="onDelete">删除</button>
+  </view>
+</view>
+
+<view class="flex-center page-container" wx:else>
+  <text style="margin-top:200rpx;font-size:30rpx;color:var(--text-light)">加载中..</text>
+</view>

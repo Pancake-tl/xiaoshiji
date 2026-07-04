@@ -1,0 +1,141 @@
+﻿<view class="page-container">
+  <view class="top-decoration"></view>
+
+  <!-- 日期/时间选择 -->
+  <view class="section">
+    <text style="font-weight:600">日期与时间</text>
+    <view style="display:flex;gap:16rpx;align-items:center;margin-top:10rpx">
+      <picker mode="date" value="{{recordDate}}" bindchange="onDateChange">
+        <view style="display:flex;align-items:center;gap:8rpx;padding:12rpx 24rpx;background:var(--bg-card);border-radius:30rpx;box-shadow:var(--heal-shadow)">
+          <text style="font-size:24rpx">📅</text>
+          <text style="font-size:28rpx">{{recordDate}}</text>
+        </view>
+      </picker>
+      <picker mode="time" value="{{recordTime}}" bindchange="onTimeChange">
+        <view style="display:flex;align-items:center;gap:8rpx;padding:12rpx 24rpx;background:var(--bg-card);border-radius:30rpx;box-shadow:var(--heal-shadow)">
+          <text style="font-size:24rpx">⏰</text>
+          <text style="font-size:28rpx">{{recordTime}}</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 分类 -->
+  <view class="section">
+    <text style="font-weight:600">分类</text>
+    <scroll-view scroll-x style="margin-top:14rpx;white-space:nowrap">
+      <view
+        wx:for="{{categories}}" wx:key="id"
+        style="display:inline-flex;padding:12rpx 24rpx;border-radius:30rpx;margin-right:12rpx;background:var(--bg-card);font-size:26rpx;border:2rpx solid transparent;transition:all .2s"
+        class="{{categoryId===item.id?'card-cute':''}}"
+        bindtap="onCategoryTap"
+        data-id="{{item.id}}"
+      >{{item.emoji}} {{item.name}}</view>
+    </scroll-view>
+  </view>
+
+  <!-- 心情 + 天气 -->
+  <view class="section" style="display:flex;gap:20rpx">
+    <view>
+      <text style="font-weight:600">心情</text>
+      <view style="display:flex;flex-wrap:wrap;gap:8rpx;margin-top:10rpx">
+        <view
+          wx:for="{{moodOptions}}" wx:key="value"
+          style="font-size:28rpx;padding:6rpx 14rpx;border-radius:12rpx;border:2rpx solid transparent;transition:all .2s;display:inline-flex;align-items:center"
+          class="{{mood===item.value?'card-cute':''}}"
+          bindtap="onMoodTap"
+          data-mood="{{item.value}}"
+        ><text style="margin-right:4rpx">{{item.emoji}}</text>{{item.value}}</view>
+      </view>
+    </view>
+    <view>
+      <text style="font-weight:600">天气</text>
+      <view style="display:flex;flex-wrap:wrap;gap:8rpx;margin-top:10rpx">
+        <view
+          wx:for="{{weatherOptions}}" wx:key="value"
+          style="font-size:28rpx;padding:6rpx 14rpx;border-radius:12rpx;border:2rpx solid transparent;transition:all .2s;display:inline-flex;align-items:center"
+          class="{{weather===item.value?'card-cute':''}}"
+          bindtap="onWeatherTap"
+          data-weather="{{item.value}}"
+        ><text style="margin-right:4rpx">{{item.emoji}}</text>{{item.value}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 内容 -->
+  <view class="section">
+    <text style="font-weight:600">内容</text>
+    <view class="card card-journal" style="margin:10rpx 0;padding:20rpx">
+      <textarea
+        style="width:100%;min-height:180rpx;font-size:30rpx;line-height:1.8"
+        placeholder="今天发生了什么小事呢？"
+        value="{{content}}"
+        bindinput="onContentInput"
+        maxlength="2000"
+        auto-height
+      />
+    </view>
+  </view>
+
+  <!-- 图片 -->
+  <view class="section">
+    <text style="font-weight:600">图片</text>
+    <view style="display:flex;flex-wrap:wrap;gap:12rpx;margin-top:10rpx">
+      <view
+        wx:for="{{images}}" wx:key="*this"
+        style="position:relative;width:180rpx;height:180rpx;border-radius:12rpx;overflow:hidden"
+      >
+        <image src="{{item}}" style="width:100%;height:100%" mode="aspectFill" />
+        <view
+          style="position:absolute;top:4rpx;right:4rpx;background:rgba(0,0,0,0.5);color:#fff;width:36rpx;height:36rpx;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20rpx"
+          bindtap="onRemoveImage"
+          data-index="{{index}}"
+        >X</view>
+      </view>
+      <view
+        wx:if="{{images.length<9}}"
+        style="width:180rpx;height:180rpx;border:2rpx dashed var(--primary-light);border-radius:12rpx;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:40rpx;color:var(--primary-light)"
+        bindtap="onChooseImage"
+      >
+        <text>+</text>
+        <text style="font-size:22rpx">{{images.length}}/9</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 语音 -->
+  <view class="section">
+    <text style="font-weight:600">语音</text>
+    <view wx:if="{{!voicePath}}" style="display:flex;justify-content:center;margin-top:12rpx">
+      <view
+        style="width:260rpx;height:100rpx;border-radius:30rpx;background:linear-gradient(135deg,#FFF0F3,#FFE0E8);border:2rpx solid var(--primary-light);display:flex;align-items:center;justify-content:center"
+        bindtouchstart="onStartRecord"
+        bindtouchend="onStopRecord"
+      >
+        <text style="font-size:26rpx">{{isRecording?'录音中...':'按住录音'}}</text>
+      </view>
+    </view>
+    <view
+      wx:if="{{voicePath}}"
+      style="display:flex;align-items:center;justify-content:space-between;padding:16rpx 24rpx;margin-top:10rpx"
+      class="card card-heal"
+    >
+      <view bindtap="onPlayVoice" style="display:flex;align-items:center;gap:12rpx">
+        <text style="font-size:24rpx;color:var(--text-light)">{{voiceDuration}}秒 [播放]</text>
+      </view>
+      <view bindtap="onRemoveVoice">
+        <text style="font-size:24rpx;color:var(--text-lighter)">X</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view style="padding:40rpx 32rpx 60rpx">
+    <button
+      class="btn-primary"
+      style="width:100%;height:96rpx;font-size:32rpx"
+      bindtap="onSubmit"
+      disabled="{{submitting}}"
+    >记录这件小事</button>
+  </view>
+</view>

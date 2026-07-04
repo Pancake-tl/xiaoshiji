@@ -1,0 +1,12 @@
+page{--primary:#FF8FA3;--primary-light:#FFB8C6;--primary-dark:#E8728A;--text:#4A3F3F;--text-light:#9B8E8E;--text-lighter:#C4B5B5;--bg:#FFF9FA;--bg-card:#FFFFFF;--border:rgba(0,0,0,0.06);--radius-sm:12rpx;--radius-md:20rpx;--radius-lg:28rpx;--radius-xl:36rpx;--cute-pink:#FFB3BA;--cute-peach:#FFDFBA;--cute-lavender:#E8BAFF;--fresh-cream:#FDF6EC;--fresh-rose:#F4C2C2;--journal-paper:#FFFAF5;--journal-grid:rgba(200,180,170,0.2);--heal-shadow:0 2px 16px rgba(0,0,0,0.04);--heal-glow:rgba(255,143,163,0.15);--font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;font-family:var(--font-family);font-size:28rpx;color:var(--text);background:var(--bg)}
+.card{background:var(--bg-card);border-radius:var(--radius-md);box-shadow:var(--heal-shadow);padding:24rpx;margin:16rpx 24rpx;position:relative;overflow:hidden}
+.card-journal{background:var(--journal-paper);border:1rpx solid rgba(200,170,150,0.3);border-radius:4rpx;background-image:linear-gradient(var(--journal-grid) 1px,transparent 1px),linear-gradient(90deg,var(--journal-grid) 1px,transparent 1px);background-size:40rpx 40rpx}
+.card-cute{border:2rpx solid var(--cute-pink);border-radius:var(--radius-lg);background:linear-gradient(135deg,#FFF5F7,#FFF9FA)}
+.card-fresh{border-radius:var(--radius-sm);background:var(--fresh-cream);border-left:6rpx solid var(--fresh-rose)}
+.card-heal{background:#FEFEFE;border-radius:var(--radius-xl);box-shadow:0 4rpx 24rpx var(--heal-glow)}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border:none;border-radius:var(--radius-xl);padding:20rpx 48rpx;font-size:30rpx;font-weight:500;box-shadow:0 4rpx 16rpx rgba(255,143,163,0.3)}
+.btn-ghost{background:transparent;color:var(--primary);border:2rpx solid var(--primary-light);border-radius:var(--radius-xl);padding:16rpx 40rpx;font-size:28rpx}
+.tag{display:inline-flex;align-items:center;padding:6rpx 18rpx;border-radius:var(--radius-xl);font-size:22rpx;margin:4rpx 8rpx 4rpx 0}
+.flex-center{display:flex;align-items:center;justify-content:center}
+.top-decoration{height:8rpx;background:linear-gradient(90deg,var(--cute-pink),var(--cute-peach),#FFFFBA,#BAFFC9,#BAE1FF,var(--cute-lavender))}
+@keyframes fade-up{from{transform:translateY(30rpx);opacity:0}to{transform:translateY(0);opacity:1}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12rpx)}}.animate-fade-up{animation:fade-up 0.4s ease-out}.animate-float{animation:float 3s ease-in-out infinite}.safe-bottom{padding-bottom:constant(safe-area-inset-bottom)}

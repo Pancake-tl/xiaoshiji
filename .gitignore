@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# backup
+*.bak
+
+# logs
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# temp
+package-lock.json

@@ -1,0 +1,5 @@
+function fd(d,f){f=f||'YYYY-MM-DD';d=d instanceof Date?d:new Date(d);var o={YYYY:d.getFullYear(),MM:('0'+(d.getMonth()+1)).slice(-2),DD:('0'+d.getDate()).slice(-2),HH:('0'+d.getHours()).slice(-2),mm:('0'+d.getMinutes()).slice(-2)};for(var k in o)f=f.replace(k,o[k]);return f}
+function grt(d){d=new Date(d);var df=Date.now()-d.getTime();if(df<60000)return'刚刚';if(df<3600000)return Math.floor(df/60000)+'分钟前';if(df<86400000)return Math.floor(df/3600000)+'小时前';if(df<172800000)return'昨天';return fd(d,'MM月DD日')}
+function gbd(rs){var m={};rs.forEach(function(r){var k=fd(r.createTime,'YYYY-MM-DD');if(!m[k]){m[k]={date:k,dateLabel:fd(r.createTime,'MM月DD日'),weekday:['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][new Date(r.createTime).getDay()],records:[]}};m[k].records.push(r)});var a=[];for(var k in m)a.push(m[k]);a.sort(function(a,b){return a.date>b.date?-1:1});return a}
+function gc(id){var app=getApp();for(var i=0;i<app.globalData.categories.length;i++){if(app.globalData.categories[i].id===id)return app.globalData.categories[i]}return{id:'other',name:'其他',color:'#D4D4D4'}}
+module.exports={formatDate:fd,getRelativeTime:grt,groupByDate:gbd,getCategory:gc}

@@ -1,0 +1,1 @@
+<view class="flex-center" style="flex-direction:column;padding:120rpx 48rpx;gap:16rpx"><text class="animate-float" style="font-size:80rpx;color:var(--text-lighter)">{{icon}}</text><text style="font-size:30rpx;color:var(--text-light)">{{text}}</text><text wx:if="{{subText}}" style="font-size:24rpx;color:var(--text-lighter)">{{subText}}</text></view>

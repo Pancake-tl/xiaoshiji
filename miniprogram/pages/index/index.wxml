@@ -1,0 +1,37 @@
+﻿<view class="page-container">
+  <floating-decoration wx:if="{{themeConfig.floatingEnabled}}" items="{{floatingItems}}" />
+  <view class="top-decoration"></view>
+
+  <view class="header-header">
+    <text style="font-size:40rpx;font-weight:700;letter-spacing:6rpx;display:block;text-align:center;padding:24rpx 0;color:var(--primary-dark)">小 事 记</text>
+  </view>
+
+  <view class="timeline" wx:if="{{timelineGroups.length>0}}">
+    <block wx:for="{{timelineGroups}}" wx:key="date">
+      <view class="date-divider">
+        <view class="date-line"></view>
+        <view class="date-label">
+          <text style="font-size:30rpx;font-weight:600;color:var(--primary-dark)">{{item.dateLabel}}</text>
+          <text style="font-size:22rpx;color:var(--text-lighter)">{{item.weekday}}</text>
+        </view>
+        <view class="date-line"></view>
+      </view>
+      <block wx:for="{{item.records}}" wx:for-item="r" wx:key="_id">
+        <record-card record="{{r}}" bindtap="onRecordTap" data-id="{{r._id}}" />
+      </block>
+    </block>
+  </view>
+
+  <empty-state wx:if="{{!loading&&timelineGroups.length===0}}" icon="~" text="还没有记录哦~" subText="点击下方&#x201C;记录&#x201D;开始吧" />
+
+  <view class="load-more" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text style="font-size:26rpx;color:var(--text-light);margin-left:12rpx">加载中..</text>
+  </view>
+
+  <view class="load-more" wx:elif="{{!hasMore&&timelineGroups.length>0}}">
+    <text style="font-size:24rpx;color:var(--text-lighter)">--- 已经到底啦 ---</text>
+  </view>
+
+  <view style="height:120rpx" class="safe-bottom"></view>
+</view>

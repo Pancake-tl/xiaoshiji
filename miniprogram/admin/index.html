@@ -1,0 +1,425 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小事记 - 管理后台</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, "Microsoft YaHei", sans-serif; background: #f5f5f5; color: #333; min-height: 100vh; }
+.header { background: #07c160; color: #fff; padding: 16px 24px; font-size: 18px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+.header .logout { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+.header .logout:hover { background: rgba(255,255,255,0.3); }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+.tab { padding: 10px 20px; border: none; background: #e8e8e8; border-radius: 6px; cursor: pointer; font-size: 14px; color: #666; }
+.tab.active { background: #07c160; color: #fff; font-weight: 500; }
+.tab:hover:not(.active) { background: #ddd; }
+.tab-badge { display: inline-block; margin-left: 6px; padding: 0 8px; border-radius: 10px; font-size: 12px; background: rgba(0,0,0,0.1); }
+.tab.active .tab-badge { background: rgba(255,255,255,0.25); }
+.panel { display: none; }
+.panel.active { display: block; }
+.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 20px; }
+.loading { text-align: center; padding: 60px 20px; color: #999; }
+.loading::after { content: "加载中..."; }
+.error { text-align: center; padding: 40px 20px; color: #e64340; }
+.empty { text-align: center; padding: 40px 20px; color: #999; }
+/* 登录页 */
+.login-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f5f5f5; }
+.login-box { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); padding: 40px; width: 380px; max-width: 90%; }
+.login-box h1 { text-align: center; color: #07c160; font-size: 24px; margin-bottom: 8px; }
+.login-box p { text-align: center; color: #999; font-size: 13px; margin-bottom: 28px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; color: #666; margin-bottom: 6px; }
+.form-group input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; outline: none; }
+.form-group input:focus { border-color: #07c160; }
+.btn { width: 100%; padding: 12px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: 500; }
+.btn-primary { background: #07c160; color: #fff; }
+.btn-primary:hover { background: #06ad56; }
+.btn-danger { background: #e64340; color: #fff; font-size: 13px; padding: 6px 12px; width: auto; }
+.btn-danger:hover { background: #d6302d; }
+.btn-sm { width: auto; padding: 6px 14px; font-size: 13px; border-radius: 4px; }
+.btn-outline { background: transparent; border: 1px solid #ddd; color: #666; cursor: pointer; padding: 6px 14px; border-radius: 4px; font-size: 13px; }
+.btn-outline:hover { border-color: #07c160; color: #07c160; }
+.login-error { color: #e64340; font-size: 13px; text-align: center; margin-bottom: 12px; display: none; }
+/* 表格 */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; white-space: nowrap; }
+th { background: #fafafa; font-weight: 500; color: #666; position: sticky; top: 0; }
+tr:hover td { background: #f8fff8; }
+td.actions { text-align: center; }
+.record-content { max-width: 300px; white-space: normal; word-break: break-all; color: #333; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; background: #e8f5e9; color: #2e7d32; margin-right: 2px; }
+.mood { font-size: 16px; }
+.weather { font-size: 14px; }
+.time { color: #999; font-size: 12px; }
+/* 用户统计 */
+.user-card { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f0f0f0; }
+.user-card:last-child { border-bottom: none; }
+.user-card .openid { font-family: monospace; font-size: 13px; color: #333; }
+.user-card .count { background: #07c160; color: #fff; border-radius: 12px; padding: 2px 12px; font-size: 13px; }
+.search-bar { margin-bottom: 16px; display: flex; gap: 10px; align-items: center; }
+.search-bar input { flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none; }
+.search-bar input:focus { border-color: #07c160; }
+.stats-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat-item { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 16px 24px; flex: 1; min-width: 150px; text-align: center; }
+.stat-item .num { font-size: 28px; font-weight: 700; color: #07c160; }
+.stat-item .label { font-size: 13px; color: #999; margin-top: 4px; }
+.confirm-dialog { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.confirm-dialog .box { background: #fff; border-radius: 10px; padding: 24px; width: 320px; max-width: 90%; text-align: center; }
+.confirm-dialog .box p { margin-bottom: 20px; font-size: 15px; line-height: 1.6; }
+.confirm-dialog .box .btns { display: flex; gap: 10px; justify-content: center; }
+.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 14px; z-index: 2000; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+</style>
+</head>
+<body>
+
+<!-- 登录页 -->
+<div id="loginPage" class="login-page">
+  <div class="login-box">
+    <h1>🌱 小事记</h1>
+    <p>管理后台 · 请输入管理员密码</p>
+    <div class="form-group">
+      <label>管理员密码</label>
+      <input type="password" id="passwordInput" placeholder="请输入密码" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div id="loginError" class="login-error">密码错误，请重试</div>
+    <button class="btn btn-primary" onclick="doLogin()">登录</button>
+  </div>
+</div>
+
+<!-- 主页面 -->
+<div id="mainPage" style="display:none">
+  <div class="header">
+    <span>🌱 小事记 · 管理后台</span>
+    <button class="logout" onclick="doLogout()">退出登录</button>
+  </div>
+  <div class="container">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('records')" id="tabRecords">
+        📋 数据记录 <span class="tab-badge" id="recordCount">0</span>
+      </button>
+      <button class="tab" onclick="switchTab('users')" id="tabUsers">
+        👥 用户统计 <span class="tab-badge" id="userCount">0</span>
+      </button>
+    </div>
+
+    <!-- 数据记录面板 -->
+    <div id="panelRecords" class="panel active">
+      <div class="stats-row">
+        <div class="stat-item"><div class="num" id="totalRecords">0</div><div class="label">总记录数</div></div>
+        <div class="stat-item"><div class="num" id="totalUsers">0</div><div class="label">总用户数</div></div>
+      </div>
+      <div class="card">
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="搜索内容、分类..." oninput="filterRecords()">
+          <button class="btn-outline" onclick="loadRecords()">🔄 刷新</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>时间</th>
+                <th>OpenID</th>
+                <th>内容</th>
+                <th>分类</th>
+                <th>心情</th>
+                <th>天气</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="recordsTableBody">
+              <tr><td colspan="7" class="loading"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 用户统计面板 -->
+    <div id="panelUsers" class="panel">
+      <div class="card">
+        <div class="search-bar">
+          <input type="text" id="userSearchInput" placeholder="搜索 OpenID..." oninput="filterUsers()">
+        </div>
+        <div id="userList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 确认对话框 -->
+<div id="confirmDialog" class="confirm-dialog" style="display:none">
+  <div class="box">
+    <p id="confirmMessage">确定要删除这条记录吗？</p>
+    <div class="btns">
+      <button class="btn-outline btn-sm" onclick="closeConfirm()">取消</button>
+      <button class="btn-danger btn-sm" id="confirmBtn">删除</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== 配置 ==========
+// 云函数 HTTP 触发地址，请根据实际环境修改
+// 格式: https://<环境ID>.service.tcloudbase.com/<函数名>
+// 或在云开发控制台 -> 云函数 -> records -> HTTP触发 中查看
+var CLOUD_FUNCTION_URL = ''; // 留空则使用云函数名方式，部署时需填写
+
+// 默认使用相对路径（适用于云开发静态网站托管同环境部署）
+// 如果跨域或部署到不同环境，请修改为完整 URL
+var API_URL = CLOUD_FUNCTION_URL || '/records';
+
+var ADMIN_PASSWORD = sessionStorage.getItem('adminPassword') || '';
+var TOAST_TIMER = null;
+
+// ========== 工具函数 ==========
+
+function showToast(msg) {
+  var old = document.querySelector('.toast');
+  if (old) old.remove();
+  if (TOAST_TIMER) clearTimeout(TOAST_TIMER);
+  var el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  TOAST_TIMER = setTimeout(function() { el.remove(); }, 2000);
+}
+
+function showConfirm(msg, callback) {
+  document.getElementById('confirmMessage').textContent = msg;
+  document.getElementById('confirmDialog').style.display = 'flex';
+  document.getElementById('confirmBtn').onclick = function() {
+    document.getElementById('confirmDialog').style.display = 'none';
+    callback();
+  };
+}
+
+function closeConfirm() {
+  document.getElementById('confirmDialog').style.display = 'none';
+}
+
+// ========== API 调用 ==========
+
+async function callAPI(action, extra) {
+  var body = Object.assign({ action: action, adminPassword: ADMIN_PASSWORD }, extra || {});
+  try {
+    var res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    var json = await res.json();
+    return json;
+  } catch (e) {
+    console.error('API 调用失败:', e);
+    return { success: false, message: '网络错误: ' + e.message };
+  }
+}
+
+// ========== 登录 ==========
+
+async function doLogin() {
+  var pwd = document.getElementById('passwordInput').value;
+  if (!pwd) { showToast('请输入密码'); return; }
+  document.getElementById('loginError').style.display = 'none';
+  var res = await callAPI('adminLogin', { password: pwd });
+  if (res.success) {
+    ADMIN_PASSWORD = pwd;
+    sessionStorage.setItem('adminPassword', pwd);
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('mainPage').style.display = 'block';
+    showToast('登录成功');
+    loadDashboard();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  ADMIN_PASSWORD = '';
+  sessionStorage.removeItem('adminPassword');
+  document.getElementById('mainPage').style.display = 'none';
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('passwordInput').value = '';
+}
+
+// ========== 面板切换 ==========
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('tab' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+  document.getElementById('panel' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+  if (name === 'records') loadRecords();
+  if (name === 'users') loadUsers();
+}
+
+// ========== 仪表盘 ==========
+
+async function loadDashboard() {
+  loadRecords();
+  loadUsers();
+}
+
+// ========== 数据记录 ==========
+
+var allRecords = [];
+
+async function loadRecords() {
+  var tbody = document.getElementById('recordsTableBody');
+  tbody.innerHTML = '<tr><td colspan="7" class="loading"></td></tr>';
+  var res = await callAPI('adminList');
+  if (res.success) {
+    allRecords = res.data || [];
+    renderRecords(allRecords);
+    document.getElementById('totalRecords').textContent = allRecords.length;
+    document.getElementById('recordCount').textContent = allRecords.length;
+  } else {
+    tbody.innerHTML = '<tr><td colspan="7" class="error">' + (res.message || '加载失败') + '</td></tr>';
+    if (res.message === '未授权，请重新登录') doLogout();
+  }
+}
+
+function renderRecords(records) {
+  var tbody = document.getElementById('recordsTableBody');
+  if (!records || records.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">暂无数据</td></tr>';
+    return;
+  }
+  var html = '';
+  records.forEach(function(rec) {
+    var time = rec.createTime ? new Date(rec.createTime).toLocaleString('zh-CN') : '-';
+    var content = (rec.content || '').substring(0, 100);
+    var tags = (rec.tags || []).map(function(t) {
+      return '<span class="tag">' + t + '</span>';
+    }).join('');
+    var mood = rec.mood || '';
+    var weather = rec.weather || '';
+    var openid = rec._openid || '-';
+    var shortOpenid = openid.length > 12 ? openid.substring(0, 10) + '...' : openid;
+    html += '<tr>';
+    html += '<td class="time">' + time + '</td>';
+    html += '<td title="' + openid + '">' + shortOpenid + '</td>';
+    html += '<td class="record-content">' + escapeHtml(content) + '</td>';
+    html += '<td>' + tags + '</td>';
+    html += '<td class="mood">' + (mood ? mood : '-') + '</td>';
+    html += '<td class="weather">' + (weather ? weather : '-') + '</td>';
+    html += '<td class="actions"><button class="btn-danger btn-sm" onclick="confirmDelete(\'' + rec._id + '\')">删除</button></td>';
+    html += '</tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function filterRecords() {
+  var keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (!keyword) {
+    renderRecords(allRecords);
+    return;
+  }
+  var filtered = allRecords.filter(function(rec) {
+    var content = (rec.content || '').toLowerCase();
+    var tags = (rec.tags || []).join('').toLowerCase();
+    var mood = (rec.mood || '').toLowerCase();
+    var openid = (rec._openid || '').toLowerCase();
+    return content.indexOf(keyword) !== -1 ||
+           tags.indexOf(keyword) !== -1 ||
+           mood.indexOf(keyword) !== -1 ||
+           openid.indexOf(keyword) !== -1;
+  });
+  renderRecords(filtered);
+}
+
+// ========== 删除 ==========
+
+var deleteTargetId = null;
+
+function confirmDelete(id) {
+  deleteTargetId = id;
+  showConfirm('确定要删除这条记录吗？此操作不可恢复。', doDelete);
+}
+
+async function doDelete() {
+  if (!deleteTargetId) return;
+  var res = await callAPI('adminDelete', { recordId: deleteTargetId });
+  if (res.success) {
+    showToast('删除成功');
+    loadRecords();
+    loadUsers();
+  } else {
+    showToast('删除失败: ' + (res.message || '未知错误'));
+    if (res.message === '未授权，请重新登录') doLogout();
+  }
+  deleteTargetId = null;
+}
+
+// ========== 用户统计 ==========
+
+var allUsers = [];
+
+async function loadUsers() {
+  var list = document.getElementById('userList');
+  list.innerHTML = '<div class="loading"></div>';
+  var res = await callAPI('adminUsers');
+  if (res.success) {
+    allUsers = res.data || [];
+    renderUsers(allUsers);
+    document.getElementById('totalUsers').textContent = allUsers.length;
+    document.getElementById('userCount').textContent = allUsers.length;
+  } else {
+    list.innerHTML = '<div class="error">' + (res.message || '加载失败') + '</div>';
+    if (res.message === '未授权，请重新登录') doLogout();
+  }
+}
+
+function renderUsers(users) {
+  var list = document.getElementById('userList');
+  if (!users || users.length === 0) {
+    list.innerHTML = '<div class="empty">暂无用户</div>';
+    return;
+  }
+  var html = '';
+  users.forEach(function(u) {
+    var shortOpenid = u.openid;
+    html += '<div class="user-card">';
+    html += '<span class="openid" title="' + u.openid + '">' + shortOpenid + '</span>';
+    html += '<span class="count">' + u.count + ' 条记录</span>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function filterUsers() {
+  var keyword = document.getElementById('userSearchInput').value.trim().toLowerCase();
+  if (!keyword) {
+    renderUsers(allUsers);
+    return;
+  }
+  var filtered = allUsers.filter(function(u) {
+    return u.openid.toLowerCase().indexOf(keyword) !== -1;
+  });
+  renderUsers(filtered);
+}
+
+// ========== 自动登录检测 ==========
+
+(function() {
+  var savedPwd = sessionStorage.getItem('adminPassword');
+  if (savedPwd) {
+    ADMIN_PASSWORD = savedPwd;
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('mainPage').style.display = 'block';
+    loadDashboard();
+  }
+})();
+</script>
+</body>
+</html>

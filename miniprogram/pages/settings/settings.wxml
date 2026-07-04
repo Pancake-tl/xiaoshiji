@@ -1,0 +1,60 @@
+﻿<view class="page-container">
+  <view class="top-decoration"></view>
+
+  <view style="margin:20rpx 36rpx;display:flex;align-items:center;gap:20rpx;padding:28rpx" class="card card-cute">
+    <view style="width:80rpx;height:80rpx;border-radius:50%;background:linear-gradient(135deg,var(--cute-pink),var(--cute-lavender));display:flex;align-items:center;justify-content:center;font-size:32rpx;color:#fff">
+      <text>M</text>
+    </view>
+    <view>
+      <text style="font-size:32rpx;font-weight:600">小可爱</text>
+      <text style="display:block;font-size:22rpx;color:var(--text-light);margin-top:4rpx">记录生活中的每一件小事</text>
+    </view>
+  </view>
+
+  <view style="padding:12rpx 36rpx">
+    <text style="font-weight:600">卡片风格</text>
+    <view style="display:flex;gap:12rpx;margin-top:12rpx">
+      <view wx:for="{{cardStyles}}" wx:key="value" class="style-item {{themeConfig.cardStyle===item.value?'si-active':''}}" bindtap="onCardStyleTap" data-value="{{item.value}}">
+        <text style="font-size:24rpx;font-weight:500">{{item.label}}</text>
+        <text style="font-size:20rpx;color:var(--text-lighter)">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view style="padding:12rpx 36rpx">
+    <view style="display:flex;align-items:center;justify-content:space-between;padding:20rpx 24rpx;background:var(--bg-card);border-radius:16rpx;box-shadow:var(--heal-shadow)">
+      <view>
+        <text style="font-size:28rpx;font-weight:500">浮层动画</text>
+        <text style="display:block;font-size:22rpx;color:var(--text-lighter);margin-top:4rpx">首页飘落装饰动效</text>
+      </view>
+      <view class="tgl {{themeConfig.floatingEnabled?'tgl-on':'tgl-off'}}" bindtap="onToggleFloating">
+        <view class="tgl-dot {{themeConfig.floatingEnabled?'tgl-dot-on':'tgl-dot-off'}}"></view>
+      </view>
+    </view>
+    <view wx:if="{{themeConfig.floatingEnabled}}" style="display:flex;gap:12rpx;margin-top:14rpx">
+      <view wx:for="{{densities}}" wx:key="value" class="den-item {{themeConfig.floatingDensity===item.value?'den-active':''}}" bindtap="onDensityTap" data-value="{{item.value}}">
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view style="padding:12rpx 36rpx">
+    <text style="font-weight:600">功能</text>
+    <view style="background:var(--bg-card);border-radius:16rpx;box-shadow:var(--heal-shadow);margin-top:12rpx;overflow:hidden">
+      <view style="display:flex;align-items:center;gap:14rpx;padding:24rpx 28rpx;border-bottom:1rpx solid var(--border)" bindtap="goDecorations">
+        <text style="font-size:28rpx;flex:1">管理装饰小物</text>
+        <text style="font-size:32rpx;color:var(--text-lighter)">></text>
+      </view>
+      <view style="display:flex;align-items:center;gap:14rpx;padding:24rpx 28rpx;border-bottom:1rpx solid var(--border)" bindtap="onClearCache">
+        <text style="font-size:28rpx;flex:1">清除本地缓存</text>
+        <text style="font-size:32rpx;color:var(--text-lighter)">></text>
+      </view>
+      <view style="display:flex;align-items:center;gap:14rpx;padding:24rpx 28rpx" bindtap="onAbout">
+        <text style="font-size:28rpx;flex:1">关于小事记</text>
+        <text style="font-size:32rpx;color:var(--text-lighter)">></text>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:120rpx" class="safe-bottom"></view>
+</view>

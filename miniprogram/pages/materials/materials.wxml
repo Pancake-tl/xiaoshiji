@@ -1,0 +1,39 @@
+﻿<view class="page-container">
+  <view class="top-decoration"></view>
+
+  <view class="card card-heal" style="margin:20rpx 36rpx;padding:20rpx 28rpx">
+    <text>上传你自己的装饰素材，用作首页飘浮装饰。</text>
+    <text style="font-size:24rpx;color:var(--text-light);display:block;margin-top:8rpx">支持 PNG / JPG 格式（最多50个）</text>
+  </view>
+
+  <view style="display:flex;justify-content:space-between;align-items:center;padding:12rpx 36rpx">
+    <text style="font-size:30rpx;font-weight:600">我的素材 ({{materials.length}}/{{maxUpload}})</text>
+    <view class="btn-primary" style="padding:12rpx 28rpx;font-size:24rpx" bindtap="onUploadImage">+ 上传</view>
+  </view>
+
+  <view wx:if="{{loading}}" style="text-align:center;padding:40rpx">
+    <text style="font-size:26rpx;color:var(--text-light)">加载中...</text>
+  </view>
+
+  <view wx:if="{{!loading && materials.length === 0}}" style="text-align:center;padding:60rpx 36rpx">
+    <text style="font-size:60rpx;display:block;margin-bottom:16rpx">🖼️</text>
+    <text style="font-size:28rpx;color:var(--text-light)">还没有上传素材</text>
+    <text style="font-size:24rpx;color:var(--text-lighter);display:block;margin-top:8rpx">点击上方"上传"按钮添加</text>
+  </view>
+
+  <view style="display:flex;flex-wrap:wrap;gap:16rpx;padding:12rpx 36rpx">
+    <view
+      wx:for="{{materials}}" wx:key="_id"
+      style="width:200rpx;background:var(--bg-card);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--heal-shadow);position:relative"
+    >
+      <image src="{{item.fileID}}" style="width:200rpx;height:200rpx" mode="aspectFill" />
+      <view style="padding:8rpx 12rpx">
+        <text style="font-size:22rpx;color:var(--text-light);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{item.name}}</text>
+      </view>
+      <view style="display:flex;gap:4rpx;padding:4rpx 8rpx 8rpx">
+        <view style="flex:1;padding:6rpx;border-radius:8rpx;background:var(--primary-light);color:#fff;font-size:20rpx;text-align:center" bindtap="onUseMaterial" data-id="{{item._id}}" data-fileid="{{item.fileID}}" data-name="{{item.name}}">使用</view>
+        <view style="flex:1;padding:6rpx;border-radius:8rpx;background:#F0F0F0;color:#999;font-size:20rpx;text-align:center" bindtap="onDeleteMaterial" data-id="{{item._id}}">删除</view>
+      </view>
+    </view>
+  </view>
+</view>

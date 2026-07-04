@@ -1,0 +1,1 @@
+const cloud=require('wx-server-sdk');cloud.init({env:cloud.DYNAMIC_CURRENT_ENV});const db=cloud.database();exports.main=async(event)=>{if(event.action==='list'){var r=await db.collection('decorations').get();return{success:true,data:r.data}}return{success:false}}
