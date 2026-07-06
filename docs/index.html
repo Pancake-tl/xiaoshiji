@@ -170,7 +170,7 @@ var CLOUD_FUNCTION_URL = ''; // 留空则使用云函数名方式，部署时需
 
 // 默认使用相对路径（适用于云开发静态网站托管同环境部署）
 // 如果跨域或部署到不同环境，请修改为完整 URL
-var API_URL = CLOUD_FUNCTION_URL || '/api/';
+var API_URL = CLOUD_FUNCTION_URL || 'https://cloud1-d7g8gwbn444bcac50-1450323372.ap-shanghai.app.tcloudbase.com/records';
 
 var ADMIN_PASSWORD = sessionStorage.getItem('adminPassword') || '';
 var TOAST_TIMER = null;
