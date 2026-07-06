@@ -1,2 +1,2 @@
-﻿.deco-tag{display:inline-flex;align-items:center;padding:14rpx 22rpx;background:var(--bg-card);border-radius:30rpx;box-shadow:var(--heal-shadow);border:2rpx solid transparent;font-size:26rpx;transition:all .2s}
-.deco-tag-active{border-color:var(--primary);background:linear-gradient(135deg,#FFF0F5,#FFF5F8);box-shadow:0 2rpx 12rpx rgba(255,143,163,0.25)}
+﻿.deco-tag{display:inline-flex;align-items:center;padding:14rpx 22rpx;background:var(--bg-card);border-radius:30rpx;box-shadow:var(--heal-shadow);border:2rpx solid #E0D5D5;font-size:26rpx;transition:all .25s}
+.deco-tag-active{border-color:var(--primary) !important;background:var(--primary) !important;color:#fff !important;box-shadow:0 4rpx 14rpx rgba(255,143,163,0.35) !important}
