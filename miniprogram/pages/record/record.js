@@ -1,4 +1,4 @@
-var cloud = require("../../utils/cloud.js");
+﻿var cloud = require("../../utils/cloud.js");
 
 Page({
   data: {
@@ -16,12 +16,12 @@ Page({
     editId: null,
     categories: [],
     moodOptions: [
-      { value: "开心", emoji: "😊" },
-      { value: "平常", emoji: "😐" },
-      { value: "难过", emoji: "😢" },
-      { value: "生气", emoji: "😠" },
-      { value: "困乏", emoji: "😴" },
-      { value: "感动", emoji: "🥹" }
+      { value: "开心", emoji: "😉" },
+      { value: "平常", emoji: "😓" },
+      { value: "难过", emoji: "😩" },
+      { value: "生气", emoji: "😧" },
+      { value: "困乏", emoji: "😾" },
+      { value: "感动", emoji: "😣" }
     ],
     weatherOptions: [
       { value: "晴", emoji: "☀️" },
@@ -30,7 +30,8 @@ Page({
       { value: "雪", emoji: "❄️" },
       { value: "彩虹", emoji: "🌈" },
       { value: "月", emoji: "🌙" }
-    ]
+    ],
+    _recorderManager: null
   },
 
   onLoad(options) {
@@ -52,6 +53,22 @@ Page({
     }
 
     this.setData(pageData);
+
+    // 初始化录音管理器，只注册一次事件
+    var rm = wx.getRecorderManager();
+    var self = this;
+    rm.onStop(function (res) {
+      self.setData({
+        voicePath: res.tempFilePath,
+        voiceDuration: Math.round(res.duration / 1000),
+        isRecording: false
+      });
+    });
+    rm.onError(function () {
+      self.setData({ isRecording: false });
+      wx.showToast({ title: "录音失败", icon: "none" });
+    });
+    this.setData({ _recorderManager: rm });
 
     if (pageData.editId) {
       this.loadRecord(pageData.editId);
@@ -99,11 +116,11 @@ Page({
   },
 
   onMoodTap(e) {
-    this.setData({ mood: e.currentTarget.dataset.mood });
+    this.setData({ mood: e.currentTarget.dataset.value });
   },
 
   onWeatherTap(e) {
-    this.setData({ weather: e.currentTarget.dataset.weather });
+    this.setData({ weather: e.currentTarget.dataset.value });
   },
 
   onChooseImage() {
@@ -131,20 +148,7 @@ Page({
 
   onStartRecord() {
     this.setData({ isRecording: true });
-    var rm = wx.getRecorderManager();
-    var self = this;
-    rm.onStop(function (res) {
-      self.setData({
-        voicePath: res.tempFilePath,
-        voiceDuration: Math.round(res.duration / 1000),
-        isRecording: false
-      });
-    });
-    rm.onError(function () {
-      self.setData({ isRecording: false });
-      wx.showToast({ title: "录音失败", icon: "none" });
-    });
-    rm.start({
+    this.data._recorderManager.start({
       duration: 60000,
       sampleRate: 16000,
       numberOfChannels: 1,
@@ -154,7 +158,7 @@ Page({
   },
 
   onStopRecord() {
-    wx.getRecorderManager().stop();
+    this.data._recorderManager.stop();
   },
 
   onRemoveVoice() {
@@ -178,41 +182,67 @@ Page({
     this.setData({ submitting: true });
     wx.showLoading({ title: "保存中..." });
 
-    var recordData = {
-      content: d.content.trim(),
-      images: d.images,
-      voicePath: d.voicePath,
-      voiceDuration: d.voiceDuration,
-      categoryId: d.categoryId,
-      mood: d.mood,
-      weather: d.weather,
-      recordDate: d.recordDate,
-      recordTime: d.recordTime
-    };
-
-    var promise;
-    if (d.editId) {
-      promise = cloud.updateRecord(d.editId, recordData);
-    } else {
-      promise = cloud.addRecord(recordData);
+    var self = this;
+    // 先上传所有图片到云存储
+    var uploadTasks = d.images.map(function (fp) { return cloud.uploadImage(fp); });
+    // 如果有录音也上传
+    if (d.voicePath) {
+      uploadTasks.push(cloud.uploadVoice(d.voicePath));
     }
 
-    var self = this;
-    promise.then(function (res) {
-      wx.hideLoading();
-      if (res.success) {
-        wx.showToast({ title: "保存成功", icon: "success" });
-        setTimeout(function () {
-          wx.switchTab({ url: "/pages/index/index" });
-        }, 800);
-      } else {
-        wx.showToast({ title: "保存失败", icon: "none" });
+    Promise.all(uploadTasks).then(function (results) {
+      var cloudImages = [];
+      var cloudVoice = d.voicePath || "";
+      var cloudVoiceDur = d.voiceDuration || 0;
+
+      for (var i = 0; i < results.length; i++) {
+        if (i < d.images.length) {
+          cloudImages.push(results[i].fileID);
+        } else {
+          // 最后一个是录音
+          cloudVoice = results[i].fileID;
+        }
       }
-      self.setData({ submitting: false });
+
+      var recordData = {
+        content: d.content.trim(),
+        images: cloudImages,
+        voicePath: cloudVoice,
+        voiceDuration: cloudVoiceDur,
+        categoryId: d.categoryId,
+        mood: d.mood,
+        weather: d.weather,
+        recordDate: d.recordDate,
+        recordTime: d.recordTime
+      };
+
+      var promise;
+      if (d.editId) {
+        promise = cloud.updateRecord(d.editId, recordData);
+      } else {
+        promise = cloud.addRecord(recordData);
+      }
+
+      promise.then(function (res) {
+        wx.hideLoading();
+        if (res.success) {
+          wx.showToast({ title: "保存成功", icon: "success" });
+          setTimeout(function () {
+            wx.switchTab({ url: "/pages/index/index" });
+          }, 800);
+        } else {
+          wx.showToast({ title: "保存失败", icon: "none" });
+        }
+        self.setData({ submitting: false });
+      }).catch(function () {
+        wx.hideLoading();
+        self.setData({ submitting: false });
+        wx.showToast({ title: "保存失败", icon: "none" });
+      });
     }).catch(function () {
       wx.hideLoading();
       self.setData({ submitting: false });
-      wx.showToast({ title: "保存失败", icon: "none" });
+      wx.showToast({ title: "上传失败", icon: "none" });
     });
   }
 });

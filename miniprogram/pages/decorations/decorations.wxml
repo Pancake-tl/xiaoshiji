@@ -1,8 +1,8 @@
-<view class="page-container">
+﻿<view class="page-container">
   <view class="top-decoration"></view>
 
   <view class="card card-heal" style="margin:20rpx 36rpx;padding:20rpx 28rpx">
-    <text>启动的装饰会出现在首页和小卡片上哦~</text>
+    <text>启动的装饰会出现在首页和小卡片上哦</text>
   </view>
 
   <view style="padding:0 36rpx;display:flex;justify-content:space-between;align-items:center">
@@ -10,12 +10,10 @@
     <view style="padding:8rpx 20rpx;border-radius:30rpx;background:var(--primary-light);font-size:24rpx;color:#fff" bindtap="goMaterials">素材库</view>
   </view>
 
-  <view style="display:flex;flex-wrap:wrap;gap:12rpx;padding:12rpx 36rpx">
-    <view wx:for="{{builtIn}}" wx:key="id" class="deco-item {{activeIds.indexOf(item.id)>-1?'active':''}}" bindtap="onToggle" data-id="{{item.id}}">
-      <text style="font-size:36rpx;margin-right:12rpx">{{item.emoji}}</text><text style="font-size:26rpx;flex:1">{{item.name}}</text>
-      <view class="deco-switch {{activeIds.indexOf(item.id)>-1?'sw-on':'sw-off'}}">
-        <view class="sw-dot {{activeIds.indexOf(item.id)>-1?'swd-on':'swd-off'}}"></view>
-      </view>
+  <view style="display:flex;flex-wrap:wrap;gap:14rpx;padding:14rpx 36rpx">
+    <view wx:for="{{builtIn}}" wx:key="id" class="deco-tag {{activeIds.indexOf(item.id)>-1?'deco-tag-active':''}}" bindtap="onToggle" data-id="{{item.id}}">
+      <text style="font-size:32rpx">{{item.emoji}}</text>
+      <text style="font-size:26rpx;margin-left:6rpx">{{item.name}}</text>
     </view>
   </view>
 
@@ -23,13 +21,10 @@
     <text style="font-size:30rpx;font-weight:600">自定义素材</text>
   </view>
 
-  <view style="display:flex;flex-wrap:wrap;gap:12rpx;padding:12rpx 36rpx">
-    <view wx:for="{{customMaterials}}" wx:key="id" class="deco-item {{activeIds.indexOf('custom_'+item.id)>-1?'active':''}}" bindtap="onToggleCustom" data-custom='{{item}}'>
-      <image style="width:36rpx;height:36rpx;border-radius:6rpx;margin-right:12rpx" src="{{item.fileID}}" mode="aspectFill" />
-      <text style="font-size:26rpx;flex:1">{{item.name}}</text>
-      <view class="deco-switch {{activeIds.indexOf('custom_'+item.id)>-1?'sw-on':'sw-off'}}">
-        <view class="sw-dot {{activeIds.indexOf('custom_'+item.id)>-1?'swd-on':'swd-off'}}"></view>
-      </view>
+  <view style="display:flex;flex-wrap:wrap;gap:14rpx;padding:14rpx 36rpx">
+    <view wx:for="{{customMaterials}}" wx:key="id" class="deco-tag {{activeIds.indexOf('custom_'+item.id)>-1?'deco-tag-active':''}}" bindtap="onToggleCustom" data-custom='{{item}}'>
+      <image style="width:32rpx;height:32rpx;border-radius:6rpx" src="{{item.fileID}}" mode="aspectFill" />
+      <text style="font-size:26rpx;margin-left:6rpx">{{item.name}}</text>
     </view>
   </view>
 </view>

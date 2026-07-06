@@ -1,4 +1,4 @@
-<view class="page-container" wx:if="{{record}}">
+﻿<view class="page-container" wx:if="{{record}}">
   <view class="top-decoration"></view>
 
   <view style="padding:20rpx 36rpx">
@@ -14,9 +14,14 @@
     <text style="font-size:30rpx;line-height:2;white-space:pre-wrap">{{record.content}}</text>
   </view>
 
-  <view wx:if="{{record.images&&record.images.length>0}}" style="display:flex;flex-wrap:wrap;gap:10rpx;padding:0 36rpx 20rpx">
-    <view wx:for="{{record.images}}" wx:key="*this" style="width:calc(50%-5rpx);aspect-ratio:1;border-radius:12rpx;overflow:hidden" bindtap="onPreviewImage" data-index="{{index}}">
-      <image src="{{item}}" style="width:100%;height:100%" mode="aspectFill" />
+  <!-- 图片：自适应展示，完整显示不裁切 -->
+  <view wx:if="{{record.images&&record.images.length>0}}" style="padding:20rpx 36rpx">
+    <view
+      wx:for="{{record.images}}" wx:key="*this"
+      style="width:100%;margin-bottom:12rpx;border-radius:12rpx;overflow:hidden;box-shadow:var(--heal-shadow)"
+      bindtap="onPreviewImage" data-index="{{index}}"
+    >
+      <image src="{{item}}" style="width:100%;height:auto" mode="widthFix" />
     </view>
   </view>
 

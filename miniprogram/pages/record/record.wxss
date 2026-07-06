@@ -1,1 +1,11 @@
-.section{padding:20rpx 32rpx}
+﻿.section{padding:20rpx 32rpx}
+
+/* 标签选中状态 - 分类 */
+.tag-chip{border:2rpx solid transparent;background:var(--bg-card);box-shadow:var(--heal-shadow)}
+.tag-chip-selected{border-color:var(--cute-pink);background:linear-gradient(135deg,#FFF5F7,#FFF9FA);box-shadow:0 2rpx 12rpx rgba(255,179,186,0.25)}
+
+/* 标签选中状态 - 心情&天气 (小尺寸) */
+.tag-chip-sm{background:var(--bg-card);box-shadow:var(--heal-shadow)}
+.tag-chip-sm-selected{border-color:var(--primary-light);box-shadow:0 2rpx 10rpx rgba(255,143,163,0.2)}
+.tag-chip-mood-selected{background:linear-gradient(135deg,#FFF0F5,#FFF5F8)}
+.tag-chip-weather-selected{background:linear-gradient(135deg,#F0F8FF,#F5FAFF)}

@@ -1,1 +1,16 @@
-<view class="{{cardClass}} rc"><view class="tape"></view><view class="rc-top"><text class="rc-time">{{timeLabel}}</text><view wx:if="{{category}}" class="tag" style="background:{{category.color}}30;color:{{category.color}};font-size:20rpx">{{category.name}}</view></view><view wx:if="{{record.content}}" class="rc-body"><text class="rc-text">{{record.content}}</text></view><view wx:if="{{record.images&&record.images[0]}}" class="rc-img-wrap"><image src="{{record.images[0]}}" class="rc-img" mode="aspectFill" /></view><view wx:if="{{record.voicePath}}" class="rc-voice"><text class="rc-voice-tag">[语音 {{record.voiceDuration||0}}s]</text></view></view>
+﻿<view class="{{cardClass}} rc">
+  <view class="tape"></view>
+  <view class="rc-top">
+    <text class="rc-time">{{timeLabel}}</text>
+    <view wx:if="{{category}}" class="tag" style="background:{{category.color}}30;color:{{category.color}};font-size:20rpx">{{category.name}}</view>
+  </view>
+  <view wx:if="{{record.content}}" class="rc-body">
+    <text class="rc-text">{{record.content}}</text>
+  </view>
+  <view wx:if="{{record.images&&record.images[0]}}" class="rc-img-wrap">
+    <image src="{{record.images[0]}}" class="rc-img" mode="widthFix" />
+  </view>
+  <view wx:if="{{record.voicePath}}" class="rc-voice">
+    <text class="rc-voice-tag">[语音 {{record.voiceDuration||0}}s]</text>
+  </view>
+</view>

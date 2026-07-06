@@ -1,5 +1,5 @@
-/**
- * 小事记 - 数据存储层
+﻿/**
+ * 小日记 - 数据存储层
  * 优先调用云函数，失败时降级到本地存储（离线回退）
  */
 
@@ -153,12 +153,36 @@ function fallbackDeleteRecord(id, resolve) {
   resolve({ success: true, _fallback: true });
 }
 
-function uploadImage(fp) {
-  return Promise.resolve({ success: true, fileID: fp });
+// 上传图片到云存储，失败时降级到本地路径
+function uploadImage(filePath) {
+  return new Promise(function (resolve) {
+    var ext = filePath.match(/\.\w+$/);
+    var cloudPath = 'images/' + Date.now() + '_' + Math.random().toString(36).substr(2, 8) + (ext ? ext[0] : '.jpg');
+    wx.cloud.uploadFile({
+      cloudPath: cloudPath,
+      filePath: filePath
+    }).then(function (res) {
+      resolve({ success: true, fileID: res.fileID });
+    }).catch(function () {
+      // 云上传失败，使用本地路径（离线回退）
+      resolve({ success: true, fileID: filePath, _fallback: true });
+    });
+  });
 }
 
-function uploadVoice(fp) {
-  return Promise.resolve({ success: true, fileID: fp });
+// 上传录音到云存储，失败时降级到本地路径
+function uploadVoice(filePath) {
+  return new Promise(function (resolve) {
+    var cloudPath = 'voices/' + Date.now() + '_' + Math.random().toString(36).substr(2, 8) + '.mp3';
+    wx.cloud.uploadFile({
+      cloudPath: cloudPath,
+      filePath: filePath
+    }).then(function (res) {
+      resolve({ success: true, fileID: res.fileID });
+    }).catch(function () {
+      resolve({ success: true, fileID: filePath, _fallback: true });
+    });
+  });
 }
 
 module.exports = {
