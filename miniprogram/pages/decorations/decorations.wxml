@@ -11,7 +11,12 @@
   </view>
 
   <view style="display:flex;flex-wrap:wrap;gap:14rpx;padding:14rpx 36rpx">
-    <view wx:for="{{builtIn}}" wx:key="id" class="deco-tag {{activeIds.indexOf(item.id)>-1?'deco-tag-active':''}}" bindtap="onToggle" data-id="{{item.id}}">
+    <view
+      wx:for="{{builtIn}}" wx:key="id"
+      style="display:inline-flex;align-items:center;padding:14rpx 22rpx;border-radius:30rpx;font-size:26rpx;transition:all .25s;{{activeIds.indexOf(item.id)>-1?'background:var(--primary);color:#fff;border:2rpx solid var(--primary);box-shadow:0 4rpx 14rpx rgba(255,143,163,0.35)':'background:var(--bg-card);color:var(--text);border:2rpx solid transparent;box-shadow:var(--heal-shadow)'}}"
+      bindtap="onToggle"
+      data-id="{{item.id}}"
+    >
       <text style="font-size:32rpx">{{item.emoji}}</text>
       <text style="font-size:26rpx;margin-left:6rpx">{{item.name}}</text>
     </view>
@@ -22,7 +27,12 @@
   </view>
 
   <view style="display:flex;flex-wrap:wrap;gap:14rpx;padding:14rpx 36rpx">
-    <view wx:for="{{customMaterials}}" wx:key="id" class="deco-tag {{activeIds.indexOf('custom_'+item.id)>-1?'deco-tag-active':''}}" bindtap="onToggleCustom" data-custom='{{item}}'>
+    <view
+      wx:for="{{customMaterials}}" wx:key="id"
+      style="display:inline-flex;align-items:center;padding:14rpx 22rpx;border-radius:30rpx;font-size:26rpx;transition:all .25s;{{activeIds.indexOf('custom_'+item.id)>-1?'background:var(--primary);color:#fff;border:2rpx solid var(--primary);box-shadow:0 4rpx 14rpx rgba(255,143,163,0.35)':'background:var(--bg-card);color:var(--text);border:2rpx solid transparent;box-shadow:var(--heal-shadow)'}}"
+      bindtap="onToggleCustom"
+      data-custom='{{item}}'
+    >
       <image style="width:32rpx;height:32rpx;border-radius:6rpx" src="{{item.fileID}}" mode="aspectFill" />
       <text style="font-size:26rpx;margin-left:6rpx">{{item.name}}</text>
     </view>

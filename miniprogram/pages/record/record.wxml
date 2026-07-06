@@ -20,13 +20,13 @@
     </view>
   </view>
 
-  <!-- 分类 -->
+  <!-- 分类 - 动态内联样式控制选中态 -->
   <view class="section">
     <text style="font-weight:600">分类</text>
     <scroll-view scroll-x style="margin-top:14rpx;white-space:nowrap">
       <view
         wx:for="{{categories}}" wx:key="id"
-        class="tag-pill {{categoryId===item.id?'tag-pill-sel':''}}"
+        style="display:inline-flex;align-items:center;padding:12rpx 24rpx;border-radius:30rpx;margin-right:12rpx;font-size:26rpx;transition:all .2s;{{categoryId===item.id?'background:var(--primary);color:#fff;border:2rpx solid var(--primary);box-shadow:0 4rpx 14rpx rgba(255,143,163,0.35)':'background:var(--bg-card);color:var(--text);border:2rpx solid transparent;box-shadow:var(--heal-shadow)'}}"
         bindtap="onCategoryTap"
         data-id="{{item.id}}"
       ><text style="margin-right:6rpx">{{item.emoji}}</text>{{item.name}}</view>
@@ -40,7 +40,7 @@
       <view style="display:flex;flex-wrap:wrap;gap:8rpx;margin-top:10rpx">
         <view
           wx:for="{{moodOptions}}" wx:key="value"
-          class="tag-pill-sm {{mood===item.value?'tag-pill-sel mood-sel':''}}"
+          style="display:inline-flex;align-items:center;padding:6rpx 14rpx;border-radius:12rpx;font-size:28rpx;transition:all .2s;{{mood===item.value?'background:linear-gradient(135deg,#FFB3BA,#FF8FA3);color:#fff;border:2rpx solid #FFB3BA;box-shadow:0 4rpx 14rpx rgba(255,143,163,0.35)':'background:var(--bg-card);color:var(--text);border:2rpx solid transparent;box-shadow:0 1rpx 6rpx rgba(0,0,0,0.04)'}}"
           bindtap="onMoodTap"
           data-value="{{item.value}}"
         ><text style="margin-right:4rpx">{{item.emoji}}</text>{{item.value}}</view>
@@ -51,7 +51,7 @@
       <view style="display:flex;flex-wrap:wrap;gap:8rpx;margin-top:10rpx">
         <view
           wx:for="{{weatherOptions}}" wx:key="value"
-          class="tag-pill-sm {{weather===item.value?'tag-pill-sel weather-sel':''}}"
+          style="display:inline-flex;align-items:center;padding:6rpx 14rpx;border-radius:12rpx;font-size:28rpx;transition:all .2s;{{weather===item.value?'background:linear-gradient(135deg,#89CFF0,#6BB5E0);color:#fff;border:2rpx solid #89CFF0;box-shadow:0 4rpx 14rpx rgba(137,207,240,0.35)':'background:var(--bg-card);color:var(--text);border:2rpx solid transparent;box-shadow:0 1rpx 6rpx rgba(0,0,0,0.04)'}}"
           bindtap="onWeatherTap"
           data-value="{{item.value}}"
         ><text style="margin-right:4rpx">{{item.emoji}}</text>{{item.value}}</view>
