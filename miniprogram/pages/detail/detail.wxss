@@ -1,2 +1,1 @@
-﻿/* 图片自适应展示 */
-.image-fit-wrap{width:100%;margin-bottom:12rpx;border-radius:12rpx;overflow:hidden;box-shadow:var(--heal-shadow)}
+/* 图片自适应展示 */

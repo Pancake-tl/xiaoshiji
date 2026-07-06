@@ -1,4 +1,4 @@
-﻿<view class="{{cardClass}} rc">
+<view class="{{cardClass}} rc">
   <view class="tape"></view>
   <view class="rc-top">
     <text class="rc-time">{{timeLabel}}</text>

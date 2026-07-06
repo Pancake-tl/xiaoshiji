@@ -1,4 +1,4 @@
-﻿var cloud = require("../../utils/cloud.js");
+var cloud = require("../../utils/cloud.js");
 
 Page({
   data: {

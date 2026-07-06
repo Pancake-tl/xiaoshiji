@@ -1,29 +1,26 @@
-﻿.section{padding:20rpx 32rpx}
+.section{padding:20rpx 32rpx}
 
-/* ===== 标签通用 ===== */
+/* 未选中标签：白底 + 浅灰边框 */
 .tag-pill,.tag-pill-sm{
   display:inline-flex;align-items:center;gap:4rpx;
-  cursor:pointer;transition:all .25s;
-  background:var(--bg-card);
-  border:2rpx solid #E8E0E0;
+  background:var(--bg-card);border:2rpx solid #E8E0E0;
+  transition:all .25s;
 }
 .tag-pill{ padding:12rpx 24rpx; border-radius:30rpx; font-size:26rpx; margin-right:12rpx; box-shadow:var(--heal-shadow); }
 .tag-pill-sm{ padding:6rpx 14rpx; border-radius:12rpx; font-size:28rpx; box-shadow:0 1rpx 6rpx rgba(0,0,0,0.04); }
 
-/* ===== 选中态 ===== */
+/* 选中态：纯色填充 + 白色文字 */
 .tag-pill-sel{
-  border-color:var(--primary) !important;
+  border:2rpx solid var(--primary) !important;
   background:var(--primary) !important;
   color:#fff !important;
   box-shadow:0 4rpx 14rpx rgba(255,143,163,0.35) !important;
 }
-
-/* 心情和天气用不同色系 */
 .mood-sel{
-  border-color:#FFB3BA !important;
+  border:2rpx solid #FFB3BA !important;
   background:linear-gradient(135deg,#FFB3BA,#FF8FA3) !important;
 }
 .weather-sel{
-  border-color:#89CFF0 !important;
+  border:2rpx solid #89CFF0 !important;
   background:linear-gradient(135deg,#89CFF0,#6BB5E0) !important;
 }
