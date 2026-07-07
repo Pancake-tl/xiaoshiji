@@ -13,7 +13,7 @@ class AdminProxy(http.server.BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.end_headers()
-            with open(__file__.replace(".py", ".html") if __file__.endswith(".py") else "index.html", "rb") as f:
+            with open("index.html", "rb") as f:
                 self.wfile.write(f.read())
         elif self.path.startswith("/api/"):
             self.handle_api("GET")
