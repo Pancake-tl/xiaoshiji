@@ -1,20 +1,52 @@
 <view class="page-container">
   <view class="top-decoration"></view>
 
+  <!-- ========== 用户资料卡 / 登录入口 ========== -->
   <view style="margin:20rpx 36rpx;display:flex;align-items:center;gap:20rpx;padding:28rpx" class="card card-cute">
-    <view style="width:80rpx;height:80rpx;border-radius:50%;background:linear-gradient(135deg,var(--cute-pink),var(--cute-lavender));display:flex;align-items:center;justify-content:center;font-size:32rpx;color:#fff">
+
+    <!-- 已登录：头像 → 点击触发 wx.chooseAvatar() -->
+    <view class="avatar-wrapper" hidden="{{!userInfo}}" bindtap="onAvatarTap">
+      <image wx:if="{{userInfo && userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" mode="aspectFill" binderror="onAvatarError" />
+      <view wx:else class="avatar-initial">{{userInfo ? (userInfo.nickName ? userInfo.nickName[0] : "?") : "?"}}</view>
+    </view>
+    <!-- 未登录：默认占位头像 -->
+    <view wx:if="{{!userInfo}}" class="avatar-placeholder">
       <text>M</text>
     </view>
-    <view>
-      <text style="font-size:32rpx;font-weight:600">小可爱</text>
+
+    <!-- 昵称 & 签名 -->
+    <view style="flex:1;min-width:0">
+      <!-- 已登录：可编辑昵称，type="nickname" 会弹出微信昵称建议 -->
+      <input wx:if="{{userInfo}}" type="nickname" class="nickname-input"
+             value="{{userInfo.nickName || ''}}" placeholder="点击设置昵称"
+             bindinput="onNicknameInput" />
+      <text wx:else style="font-size:32rpx;font-weight:600">小可爱</text>
       <text style="display:block;font-size:22rpx;color:var(--text-light);margin-top:4rpx">记录生活中的每一件小事</text>
+    </view>
+
+    <!-- 未登录：微信一键登录按钮 -->
+    <view wx:if="{{!userInfo && !logging}}" class="login-btn" bindtap="onLogin">
+      <text>微信一键登录</text>
+    </view>
+    <view wx:elif="{{!userInfo && logging}}" class="login-btn login-btn-loading">
+      <text>登录中..</text>
     </view>
   </view>
 
+  <!-- 已登录：退出登录链接 -->
+  <view wx:if="{{userInfo}}" style="text-align:center;margin:-8rpx 36rpx 16rpx"
+        hover-class="none">
+    <text style="font-size:24rpx;color:var(--text-lighter);text-decoration:underline"
+          bindtap="onLogout">退出登录</text>
+  </view>
+
+  <!-- ========== 其余设置项（原样保留） ========== -->
   <view style="padding:12rpx 36rpx">
     <text style="font-weight:600">卡片风格</text>
     <view style="display:flex;gap:12rpx;margin-top:12rpx">
-      <view wx:for="{{cardStyles}}" wx:key="value" class="style-item {{themeConfig.cardStyle===item.value?'si-active':''}}" bindtap="onCardStyleTap" data-value="{{item.value}}">
+      <view wx:for="{{cardStyles}}" wx:key="value"
+            class="style-item {{themeConfig.cardStyle===item.value?'si-active':''}}"
+            bindtap="onCardStyleTap" data-value="{{item.value}}">
         <text style="font-size:24rpx;font-weight:500">{{item.label}}</text>
         <text style="font-size:20rpx;color:var(--text-lighter)">{{item.desc}}</text>
       </view>
@@ -32,7 +64,9 @@
       </view>
     </view>
     <view wx:if="{{themeConfig.floatingEnabled}}" style="display:flex;gap:12rpx;margin-top:14rpx">
-      <view wx:for="{{densities}}" wx:key="value" class="den-item {{themeConfig.floatingDensity===item.value?'den-active':''}}" bindtap="onDensityTap" data-value="{{item.value}}">
+      <view wx:for="{{densities}}" wx:key="value"
+            class="den-item {{themeConfig.floatingDensity===item.value?'den-active':''}}"
+            bindtap="onDensityTap" data-value="{{item.value}}">
         <text>{{item.label}}</text>
       </view>
     </view>
@@ -50,7 +84,7 @@
         <text style="font-size:32rpx;color:var(--text-lighter)">></text>
       </view>
       <view style="display:flex;align-items:center;gap:14rpx;padding:24rpx 28rpx" bindtap="onAbout">
-        <text style="font-size:28rpx;flex:1">关于小事记</text>
+        <text style="font-size:28rpx;flex:1">关于好运小本</text>
         <text style="font-size:32rpx;color:var(--text-lighter)">></text>
       </view>
     </view>

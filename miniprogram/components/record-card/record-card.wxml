@@ -1,16 +1,17 @@
-<view class="{{cardClass}} rc">
-  <view class="tape"></view>
-  <view class="rc-top">
-    <text class="rc-time">{{timeLabel}}</text>
-    <view wx:if="{{category}}" class="tag" style="background:{{category.color}}30;color:{{category.color}};font-size:20rpx">{{category.name}}</view>
+<view class="moments-card" data-id="{{record._id}}">
+  <view class="moments-avatar">
+    <text class="moments-avatar-text">{{avatarEmoji}}</text>
   </view>
-  <view wx:if="{{record.content}}" class="rc-body">
-    <text class="rc-text">{{record.content}}</text>
-  </view>
-  <view wx:if="{{record.images&&record.images[0]}}" class="rc-img-wrap">
-    <image src="{{record.images[0]}}" class="rc-img" mode="widthFix" />
-  </view>
-  <view wx:if="{{record.voicePath}}" class="rc-voice">
-    <text class="rc-voice-tag">[语音 {{record.voiceDuration||0}}s]</text>
+  <view class="moments-body">
+    <text class="moments-nickname">好运小事</text>
+    <view class="moments-meta">
+      <text class="moments-meta-item">{{record.recordDate}} {{record.recordTime}}</text>
+      <text wx:if="{{record.mood}}" class="moments-meta-item">{{record.mood}}</text>
+      <text wx:if="{{record.weather}}" class="moments-meta-item">{{record.weather}}</text>
+      <text wx:if="{{category}}" class="moments-category" style="color:{{category.color}}">{{category.name}}</text>
+    </view>
+    <view wx:if="{{record.content}}" class="moments-content">
+      <text class="moments-text">{{record.content}}</text>
+    </view>
   </view>
 </view>

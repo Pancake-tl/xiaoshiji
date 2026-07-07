@@ -1,4 +1,4 @@
-"""小事记管理后台 - 本地服务器 / GitHub Pages 兼容版"""
+"""好运小本管理后台 - 本地服务器 / GitHub Pages 兼容版"""
 import http.server
 import urllib.request
 import json
@@ -73,7 +73,7 @@ class AdminProxy(http.server.BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     server = http.server.HTTPServer(("0.0.0.0", PORT), AdminProxy)
-    print(f"小事记管理后台: http://localhost:{PORT}")
+    print(f"好运小本管理后台: http://localhost:{PORT}")
     print(f"按 Ctrl+C 停止")
     try:
         server.serve_forever()

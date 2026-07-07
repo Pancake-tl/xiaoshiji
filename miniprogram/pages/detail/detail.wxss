@@ -1,1 +1,46 @@
-/* 图片自适应展示 */
+/* ========== 朋友圈头部 ========== */
+.moments-header{display:flex;padding:32rpx 36rpx 0;align-items:flex-start}
+.moment-avatar{width:80rpx;height:80rpx;border-radius:10rpx;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:20rpx}
+.moment-avatar-text{font-size:36rpx;color:#fff}
+.moment-header-right{flex:1;min-width:0}
+.moment-nickname{font-size:30rpx;font-weight:600;color:var(--primary-dark);display:block;margin-bottom:8rpx}
+.moment-tags{display:flex;flex-wrap:wrap;gap:6rpx;align-items:center}
+.moment-tag{font-size:22rpx;color:var(--text-lighter)}
+.moment-tag+.moment-tag::before{content:"·";margin-right:6rpx;color:var(--text-lighter)}
+.moment-category-tag{padding:1rpx 10rpx;border-radius:4rpx}
+.moment-category-tag::before{display:none!important}
+
+/* ========== 朋友圈正文 ========== */
+.moment-content{padding:20rpx 36rpx 0}
+.moment-text{font-size:30rpx;line-height:1.8;white-space:pre-wrap;color:var(--text)}
+
+/* ========== 图片九宫格（朋友圈样式） ========== */
+.moment-images{display:flex;flex-wrap:wrap;padding:16rpx 36rpx 0;box-sizing:border-box}
+.moment-image-item{overflow:hidden;border-radius:6rpx;background:#F0F0F0}
+
+/* 单张图片 */
+.grid-col-1{display:block}
+.grid-col-1 .moment-image-item{width:400rpx;height:auto}
+.grid-col-1 .moment-image{width:400rpx;max-height:500rpx}
+
+/* 2列：2-4张图片 */
+.grid-col-2{gap:6rpx}
+.grid-col-2 .moment-image-item{width:calc(50% - 3rpx);position:relative}
+.grid-col-2 .moment-image-item::before{content:"";display:block;padding-top:100%}
+.grid-col-2 .moment-image{position:absolute;top:0;left:0;width:100%;height:100%}
+
+/* 3列：5-9张图片 */
+.grid-col-3{gap:6rpx}
+.grid-col-3 .moment-image-item{width:calc(33.333% - 4rpx);position:relative}
+.grid-col-3 .moment-image-item::before{content:"";display:block;padding-top:100%}
+.grid-col-3 .moment-image{position:absolute;top:0;left:0;width:100%;height:100%}
+
+/* ========== 语音 ========== */
+.moment-voice{display:flex;align-items:center;gap:10rpx;margin:20rpx 36rpx 0;padding:20rpx 24rpx;background:#F7F7F7;border-radius:8rpx}
+.moment-voice-icon{font-size:28rpx}
+.moment-voice-text{font-size:26rpx;color:var(--text-light)}
+
+/* ========== 操作按钮 ========== */
+.moment-actions{display:flex;gap:16rpx;padding:40rpx 36rpx}
+.moment-btn{flex:1;height:72rpx;font-size:28rpx;background:#F5F5F5;color:var(--text);border:none;border-radius:8rpx;text-align:center;line-height:72rpx}
+.moment-btn-danger{color:#E8728A}

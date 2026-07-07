@@ -1,5 +1,5 @@
-var util = require('../../utils/util.js');
-var theme = require('../../utils/theme.js');
+var util = require("../../utils/util.js");
+var theme = require("../../utils/theme.js");
 
 Component({
   properties: {
@@ -11,18 +11,17 @@ Component({
 
   data: {
     category: null,
-    timeLabel: '',
-    cardClass: ''
+    avatarEmoji: "⭐"
   },
 
   observers: {
     record() {
       var r = this.properties.record;
       if (!r) return;
+      var cat = util.getCategory(r.categoryId);
       this.setData({
-        category: util.getCategory(r.categoryId),
-        timeLabel: util.getRelativeTime(r.createTime),
-        cardClass: 'card ' + theme.getCardClass(theme.getConfig().cardStyle)
+        category: cat,
+        avatarEmoji: cat && cat.emoji ? cat.emoji : "⭐"
       });
     }
   }

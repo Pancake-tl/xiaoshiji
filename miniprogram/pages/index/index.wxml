@@ -3,7 +3,7 @@
   <view class="top-decoration"></view>
 
   <view class="header-header">
-    <text style="font-size:40rpx;font-weight:700;letter-spacing:6rpx;display:block;text-align:center;padding:24rpx 0;color:var(--primary-dark)">小 事 记</text>
+    <text style="font-size:40rpx;font-weight:700;letter-spacing:6rpx;display:block;text-align:center;padding:24rpx 0;color:var(--primary-dark);font-family:SimSun,&quot;宋体&quot;,serif">好运小本</text>
   </view>
 
   <view class="timeline" wx:if="{{timelineGroups.length>0}}">
@@ -17,7 +17,9 @@
         <view class="date-line"></view>
       </view>
       <block wx:for="{{item.records}}" wx:for-item="r" wx:key="_id">
-        <record-card record="{{r}}" bindtap="onRecordTap" data-id="{{r._id}}" />
+        <view class="moment-card-wrap" bindtap="onRecordTap" data-id="{{r._id}}">
+          <record-card record="{{r}}" />
+        </view>
       </block>
     </block>
   </view>

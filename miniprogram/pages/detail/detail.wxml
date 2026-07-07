@@ -1,41 +1,55 @@
 <view class="page-container" wx:if="{{record}}">
   <view class="top-decoration"></view>
 
-  <view style="padding:20rpx 36rpx">
-    <text style="font-size:26rpx;color:var(--text-light)">{{record.createTime}}</text>
-    <view style="display:flex;gap:8rpx;margin-top:10rpx">
-      <view wx:if="{{category}}" class="tag" style="background:{{category.color}}40;color:{{category.color}}">{{category.name}}</view>
-      <view wx:if="{{record.mood}}" class="tag" style="background:var(--bg)">{{record.mood}}</view>
-      <view wx:if="{{record.weather}}" class="tag" style="background:var(--bg)">{{record.weather}}</view>
+  <!-- 朋友圈头部：头像 + 昵称 -->
+  <view class="moments-header">
+    <view class="moment-avatar">
+      <text class="moment-avatar-text">{{avatarEmoji}}</text>
+    </view>
+    <view class="moment-header-right">
+      <text class="moment-nickname">好运小事</text>
+      <view class="moment-tags">
+        <text class="moment-tag">{{record.recordDate}} {{record.recordTime}}</text>
+        <text wx:if="{{category}}" class="moment-tag moment-category-tag" style="color:{{category.color}};background:{{category.color}}20">{{category.name}}</text>
+        <text wx:if="{{record.mood}}" class="moment-tag">{{record.mood}}</text>
+        <text wx:if="{{record.weather}}" class="moment-tag">{{record.weather}}</text>
+      </view>
     </view>
   </view>
 
-  <view wx:if="{{record.content}}" class="card card-journal" style="padding:32rpx;margin:8rpx 36rpx">
-    <text style="font-size:30rpx;line-height:2;white-space:pre-wrap">{{record.content}}</text>
+  <!-- 朋友圈正文 -->
+  <view wx:if="{{record.content}}" class="moment-content">
+    <text class="moment-text">{{record.content}}</text>
   </view>
 
-  <!-- 图片：自适应展示，完整显示不裁切 -->
-  <view wx:if="{{record.images&&record.images.length>0}}" style="padding:20rpx 36rpx">
+  <!-- 朋友圈图片九宫格 -->
+  <view wx:if="{{record.images&&record.images.length>0}}" class="moment-images {{'grid-col-' + (record.images.length===1?'1':record.images.length<5?'2':'3')}}">
     <view
       wx:for="{{record.images}}" wx:key="*this"
-      style="width:100%;margin-bottom:12rpx;border-radius:12rpx;overflow:hidden;box-shadow:var(--heal-shadow)"
-      bindtap="onPreviewImage" data-index="{{index}}"
+      class="moment-image-item"
+      bindtap="onPreviewImage"
+      data-index="{{index}}"
     >
-      <image src="{{item}}" style="width:100%;height:auto" mode="widthFix" />
+      <image src="{{item}}" mode="{{record.images.length===1?'widthFix':'aspectFill'}}" class="moment-image" />
     </view>
   </view>
 
-  <view wx:if="{{record.voicePath}}" class="card card-heal" style="margin:8rpx 36rpx;display:flex;align-items:center;gap:14rpx;padding:20rpx 28rpx" bindtap="onPlayVoice">
-    <text style="font-size:26rpx;color:var(--text-light);flex:1">[播放语音]</text>
-    <text style="font-size:22rpx;color:var(--primary)">{{record.voiceDuration||0}}s</text>
+  <!-- 语音 -->
+  <view wx:if="{{record.voicePath}}" class="moment-voice" bindtap="onPlayVoice">
+    <text class="moment-voice-icon">🎤</text>
+    <text class="moment-voice-text">{{record.voiceDuration||0}}秒语音</text>
   </view>
 
-  <view style="display:flex;gap:20rpx;padding:24rpx 36rpx 60rpx">
-    <button class="btn-ghost" style="flex:1;padding:24rpx 0" bindtap="onEdit">编辑</button>
-    <button class="btn-ghost" style="flex:1;padding:24rpx 0;color:#E8728A;border-color:#FFB8C6" bindtap="onDelete">删除</button>
+  <!-- 操作按钮 -->
+  <view class="moment-actions">
+    <button class="moment-btn" bindtap="onEdit">编辑</button>
+    <button class="moment-btn moment-btn-danger" bindtap="onDelete">删除</button>
   </view>
+
+  <!-- 底部留白 -->
+  <view style="height:60rpx"></view>
 </view>
 
 <view class="flex-center page-container" wx:else>
-  <text style="margin-top:200rpx;font-size:30rpx;color:var(--text-light)">加载中..</text>
+  <text style="margin-top:300rpx;font-size:30rpx;color:var(--text-light)">加载中..</text>
 </view>

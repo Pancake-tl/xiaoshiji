@@ -133,7 +133,7 @@ Page({
     wx.chooseMedia({
       count: remain,
       mediaType: ["image"],
-      sizeType: ["compressed"]
+      sizeType: ["original"]
     }).then(function (res) {
       var imgs = res.tempFiles.map(function (f) { return f.tempFilePath; });
       self.setData({ images: self.data.images.concat(imgs) });
